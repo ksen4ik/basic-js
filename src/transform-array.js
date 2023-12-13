@@ -15,31 +15,40 @@ const { NotImplementedError } = require('../extensions/index.js');
  */
 function transform(arr) {
     if(Array.isArray(arr)) {
-        for(let i = 0; i < arr.length; i++) {
-            if(arr[i] == '--discard-next') {
-                if(arr[i+1]) {
-                    let index00 = arr.indexOf('--discard-next');
-                    arr.splice(index00, 2);
+        var newArr = [...arr];
+        for(let i = 0; i < newArr.length; i++) {
+            if(newArr[i] == '--discard-next') {
+                if(newArr[i+1]) {
+                    let index00 = newArr.indexOf('--discard-next');
+                    newArr.splice(index00, 2);
+                } else {
+                    newArr.splice(-1, 1);
                 }
             }
-            if(arr[i] == '--discard-prev') {
-                if(arr[i-1]) {
-                    let index11 = arr.indexOf(arr[i-1]);
-                    arr.splice(index11, 2);
+            if(newArr[i] == '--discard-prev') {
+                if(newArr[i-1]) {
+                    let index11 = newArr.indexOf(newArr[i-1]);
+                    newArr.splice(index11, 2);
+                } else {
+                    newArr.splice(0, 1);
                 }
             }
-            if(arr[i] == '--double-next') {
-                if(arr[i+1]) {
-                    arr[i] = arr[i+1];
+            if(newArr[i] == '--double-next') {
+                if(newArr[i+1]) {
+                    newArr[i] = newArr[i+1];
+                } else {
+                    newArr.splice(-1, 1);
                 }
             }
-            if(arr[i] == '--double-prev') {
-                if(arr[i-1]) {
-                    arr[i] = arr[i-1];
+            if(newArr[i] == '--double-prev') {
+                if(newArr[i-1]) {
+                    newArr[i] = newArr[i-1];
+                } else {
+                    newArr.splice(0, 1);
                 }
             }
         }
-        return arr;
+        return newArr;
     } else {
         throw new Error("'arr' parameter must be an instance of the Array!");
     }
