@@ -15,39 +15,21 @@ const { NotImplementedError } = require('../extensions/index.js');
  */
 function transform(arr) {
     if(Array.isArray(arr)) {
-        var newArr = [...arr];
-        for(let i = 0; i < newArr.length; i++) {
-            if(newArr[i] == '--discard-next') {
-                if(newArr[i+1]) {
-                    let index00 = newArr.indexOf('--discard-next');
-                    newArr.splice(index00, 2);
-                } else {
-                    newArr.splice(-1, 1);
-                }
+        var newArr = [];
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i] == "--discard-next") {
+            i++;
+            if (arr[i++] == "'--double-prev'") {
+              i++;
             }
-            if(newArr[i] == '--discard-prev') {
-                if(newArr[i-1]) {
-                    let index11 = newArr.indexOf(newArr[i-1]);
-                    newArr.splice(index11, 2);
-                } else {
-                    newArr.splice(0, 1);
-                }
-            }
-            if(newArr[i] == '--double-next') {
-                if(newArr[i+1]) {
-                    newArr[i] = newArr[i+1];
-                } else {
-                    newArr.splice(-1, 1);
-                }
-            }
-            if(newArr[i] == '--double-prev') {
-                if(newArr[i-1]) {
-                    newArr[i] = newArr[i-1];
-                } else {
-                    newArr.splice(0, 1);
-                }
-            }
+          } else if (arr[i] == "--discard-prev") newArr.pop();
+            else if (arr[i] == "--double-next") newArr.push(arr[i + 1]);
+            else if (arr[i] == "--double-prev") newArr.push(arr[i - 1]);
+            else newArr.push(arr[i]);
         }
+        if(newArr[0] == undefined) newArr.shift();
+        if(newArr[newArr.length-1] == undefined) newArr.pop();
+
         return newArr;
     } else {
         throw new Error("'arr' parameter must be an instance of the Array!");
