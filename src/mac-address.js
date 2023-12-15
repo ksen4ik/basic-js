@@ -16,16 +16,14 @@ const { NotImplementedError } = require('../extensions/index.js');
  */
 function isMAC48Address(n) {
   n = n.split("-");
+  if (n.length !== 6) return false;
 
-  if (n.length == 6) {
-    n.forEach(num => {
-      if (parseInt(num, 16) < parseInt(0, 16) || parseInt(num, 16) > parseInt(255, 16) || isNaN(parseInt(num, 16))) return false;
-    });
-
-    return true;
+  for(let i = 0; i < n.length; i++) {
+    let num = n[i];
+    if (parseInt(num, 16) < parseInt(0, 16) || parseInt(num, 16) > parseInt(255, 16) || isNaN(parseInt(num, 16))) return false;
   }
-  
-  return false;
+
+  return true;
 }
 
 module.exports = {
