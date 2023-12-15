@@ -36,6 +36,8 @@ function renameFiles(names) {
       count[name] = 1;
     }
   }
+  
+  return names;
 }
 
 module.exports = {
